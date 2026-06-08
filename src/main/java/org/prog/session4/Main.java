@@ -34,7 +34,7 @@ public class Main {
 
         int distance = 45;
 
-        car1.goTo(distance);
-        car2.goTo(500);
+        car1.goTo(distance, "test1");
+        car2.goTo(500, "test2");
     }
 }
