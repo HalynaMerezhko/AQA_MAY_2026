@@ -20,5 +20,26 @@ public class HomeWork {
                 "asd@@asd.asd",
                 "some_email_that_is_very_long@long_domain_name.com" //+
         };
+
+
+        for (int i = 0; i < emails.length; i++) {
+                int firstAtIndex = emails[i].indexOf('@');
+                if (firstAtIndex >= 3) {
+                    int lastAtIndex = emails[i].lastIndexOf('@');
+                    if (firstAtIndex == lastAtIndex) {
+                        String domain = emails[i].substring(firstAtIndex + 1);
+                        int firstDotDomainIndex = domain.indexOf('.');
+                        int lastDotDomainIndex = domain.lastIndexOf('.');
+                        if (domain.length() >= 7
+                                && firstDotDomainIndex != -1
+                                && firstDotDomainIndex != 0
+                                && lastDotDomainIndex != domain.length() - 1
+                                && firstDotDomainIndex == lastDotDomainIndex)
+                                {
+                            System.out.println(emails[i]);
+                        }
+                    }
+                }
+            }
+        }
     }
-}
