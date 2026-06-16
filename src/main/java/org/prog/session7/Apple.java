@@ -1,0 +1,31 @@
+package org.prog.session7;
+
+public class Apple {
+    public String color;
+    public String modelName;
+
+    public void call(String contact) {
+        System.out.println("calling " + contact);
+    }
+
+    public void unlock() {
+        System.out.println("unlock by faceID");
+    }
+
+    @Override
+    public int hashCode() {
+        String valueToHash = color + modelName;
+        return valueToHash.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Apple) {
+            Apple apple = (Apple) obj;
+            int hashCode1 = (color + modelName).hashCode();
+            int hashCode2 = (apple.color + apple.modelName).hashCode();
+            return hashCode1 == hashCode2;
+        }
+        return false;
+    }
+}
