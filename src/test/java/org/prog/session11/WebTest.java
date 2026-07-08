@@ -5,6 +5,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
@@ -29,20 +30,19 @@ public class WebTest {
         driver.quit();
     }
 
+
     @Test
-    public void myWebTest() {
-        driver.get("https://www.google.com/");
-        List<WebElement> cookieLink = driver.findElements(
-                By.xpath("//a[contains(@href, 'cookies')]"));
-        if (!cookieLink.isEmpty() && cookieLink.get(0).isDisplayed()) {
-            List<WebElement> cookieFormButtons =
-                    driver.findElements(By.xpath("//a[contains(@href, 'cookies')]/../../../..//button"));
-            cookieFormButtons.get(3).click();
+    public void alloTest() throws Exception {
+        driver.get("https://allo.ua/");
+        List<WebElement> searchPanels = driver.findElements(By.id("search-form__input"));
+
+        if (searchPanels.size() != 1) {
+            throw new Exception("Search penal is not found");
         }
-        WebElement searchBox = driver.findElement(By.name("q"));
-        searchBox.sendKeys("Selenium Demo");
-        searchBox.sendKeys(Keys.ENTER);
-        System.out.println("done!");
+        WebElement searchPanel = searchPanels.getFirst();
+        searchPanel.click();
+        searchPanel.sendKeys("Iphone");
+        searchPanel.sendKeys(Keys.ENTER);
     }
 }
 
