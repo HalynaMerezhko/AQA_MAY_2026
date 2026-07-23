@@ -1,18 +1,18 @@
 package org.prog.session12;
 
+import groovy.util.MapEntry;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
+import org.prog.session12.pages.AlloPage;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
-import java.time.Duration;
+import java.sql.*;
+import java.util.Dictionary;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 //TODO: on allo ua page - for first 3 goods print and assert not null goods price and goods code
@@ -21,16 +21,21 @@ import java.util.Random;
 public class WebTest {
 
     private WebDriver driver;
+    private AlloPage alloPage;
+    private Connection connection;
 
     private Random random = new Random();
 
     @BeforeSuite
-    public void beforeSuite() {
+    public void beforeSuite() throws SQLException {
         ChromeOptions options = new ChromeOptions();
         options.setAcceptInsecureCerts(true);
         options.addArguments("start-maximized");
         options.addArguments("--disable-notifications");
         driver = new ChromeDriver(options);
+        alloPage = new AlloPage(driver);
+        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/db",
+                "root", "password");
     }
 
     @AfterSuite
@@ -40,37 +45,21 @@ public class WebTest {
 
     @Test
     public void alloTest() throws Exception {
-        driver.get("https://allo.ua/");
-        List<WebElement> searchPanels = driver.findElements(By.id("search-form__input"));
+        alloPage.loadPage();
+        alloPage.search("Iphone");
+        int cardsCount = 3;
+        List<WebElement> productCards = alloPage.getProductCards(cardsCount);
+        Map<String, String> productInfo = alloPage.getProductInfo(productCards, cardsCount);
 
-        if (searchPanels.size() != 1) {
-            throw new Exception("Search penal is not found");
-        }
-        WebElement searchPanel = searchPanels.getFirst();
-        searchPanel.click();
-        searchPanel.sendKeys("Iphone");
-        searchPanel.sendKeys(Keys.ENTER);
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30L));
-        WebElement productCard =
-                wait.until(ExpectedConditions.elementToBeClickable(By.className("product-card")));
-
-        List<WebElement> productCards = driver.findElements(By.className("product-card"));
-        Assert.assertNotNull(productCards);
-        Assert.assertTrue(productCards.size() > 3);
-
-
-        for (int i = 0; i < 3; i++) {
-            Actions actions = new Actions(driver);
-            actions.moveToElement(productCards.get(i)).perform();
-
-            List<WebElement> skuWebElements = productCards.get(i).findElements(By.className("product-sku__value"));
-            Assert.assertNotNull(skuWebElements);
-
-            List<WebElement> priceWebElements = productCards.get(i).findElements(By.className("sum"));
-            Assert.assertNotNull(priceWebElements);
-
-            System.out.println(skuWebElements.getFirst().getText() + " - " + priceWebElements.getLast().getText());
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO phones (Model, Price) VALUES(? , ?)");
+        for (Map.Entry<String, String> record: productInfo.entrySet()){
+            try{
+                statement.setString(1, record.getKey());
+                statement.setString(2, record.getValue());
+                statement.execute();
+            } catch (SQLException e) {
+                System.out.println("Failes to insert phone " + record.getKey());
+            }
         }
     }
 }
