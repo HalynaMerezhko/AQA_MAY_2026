@@ -1,5 +1,6 @@
 package org.prog.session12.pages;
 
+import io.cucumber.java.en.Given;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -30,7 +31,7 @@ public class AlloPage {
         if (searchPanels.size() != 1) {
             throw new Exception("Search penal is not found");
         }
-        WebElement searchPanel = searchPanels.getFirst();
+        WebElement searchPanel = searchPanels.get(0);
         searchPanel.click();
         searchPanel.sendKeys(searchText);
         searchPanel.sendKeys(Keys.ENTER);
@@ -59,8 +60,8 @@ public class AlloPage {
 
             List<WebElement> priceWebElements = productCards.get(i).findElements(By.className("sum"));
             Assert.assertNotNull(priceWebElements);
-            String model = modelWebElements.getFirst().getText();
-            String price = priceWebElements.getFirst().getText();
+            String model = modelWebElements.get(0).getText();
+            String price = priceWebElements.get(0).getText();
             productInfo.put(model, price);
             System.out.println(model + " - " + price);
         }

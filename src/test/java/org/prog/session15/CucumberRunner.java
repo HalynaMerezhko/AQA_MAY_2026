@@ -6,7 +6,9 @@ import io.cucumber.testng.CucumberOptions;
 import lombok.SneakyThrows;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.prog.session12.pages.AlloPage;
 import org.prog.session14.pages.GooglePage;
+import org.prog.session15.steps.AlloWebSteps;
 import org.prog.session15.steps.DBSteps;
 import org.prog.session15.steps.WebSteps;
 import org.testng.annotations.AfterSuite;
@@ -18,7 +20,7 @@ import java.sql.SQLException;
 //TODO: previous HW in cucumber
 
 @CucumberOptions(
-        features = {"src/test/resources/features"},
+        features = {"src/test/resources/features/homework-15"},
         glue = "org.prog.session15.steps",
         plugin = {
                 "pretty",
@@ -29,13 +31,15 @@ import java.sql.SQLException;
 public class CucumberRunner extends AbstractTestNGCucumberTests {
 
     private WebDriver driver;
+    private AlloPage alloPage;
 
     @SneakyThrows
     @BeforeSuite
     public void beforeSuite() {
         driver = new ChromeDriver();
-        WebSteps.googlePage = new GooglePage(driver);
-        DBSteps.connection = DriverManager.getConnection(
+        alloPage = new AlloPage(driver);
+        AlloWebSteps.alloPage = alloPage;
+        AlloWebSteps.connection = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/db", "root", "password");
     }
 
@@ -46,6 +50,6 @@ public class CucumberRunner extends AbstractTestNGCucumberTests {
 
     @AfterSuite
     public void afterSuite2() throws SQLException {
-        DBSteps.connection.close();
+        AlloWebSteps.connection.close();
     }
 }

@@ -4,6 +4,7 @@ import io.cucumber.java.en.Given;
 import org.prog.session13.dto.PersonDto;
 
 import java.sql.*;
+import java.util.Map;
 
 public class DBSteps {
     public static Connection connection;
