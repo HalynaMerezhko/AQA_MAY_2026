@@ -3,7 +3,7 @@
 <suite name="Suite1" verbose="1" parallel="methods" thread-count="2">
     <test name="UserReg">
         <classes>
-            <class name="org.prog.session17.CucumberRunner"/>
+            <class name="org.prog.session15.CucumberRunner"/>
         </classes>
     </test>
 </suite>

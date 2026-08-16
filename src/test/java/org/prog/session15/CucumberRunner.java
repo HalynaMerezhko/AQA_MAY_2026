@@ -11,6 +11,8 @@ import org.prog.session14.pages.GooglePage;
 import org.prog.session15.steps.AlloWebSteps;
 import org.prog.session15.steps.DBSteps;
 import org.prog.session15.steps.WebSteps;
+import org.prog.session15.util.DBConnectionFactory;
+import org.prog.session15.util.WebDriverFactory;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 
@@ -36,11 +38,10 @@ public class CucumberRunner extends AbstractTestNGCucumberTests {
     @SneakyThrows
     @BeforeSuite
     public void beforeSuite() {
-        driver = new ChromeDriver();
+        driver = WebDriverFactory.getDriver();
         alloPage = new AlloPage(driver);
         AlloWebSteps.alloPage = alloPage;
-        AlloWebSteps.connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/db", "root", "password");
+        AlloWebSteps.connection = DBConnectionFactory.getConnection();
     }
 
     @AfterSuite
