@@ -26,7 +26,8 @@ import java.sql.SQLException;
         glue = "org.prog.session15.steps",
         plugin = {
                 "pretty",
-                "html:target/report.html"
+                "html:target/report.html",
+                "json:target/Cucumber.json"
         }
 //        ,tags = "@regression and not @skip"
 )
