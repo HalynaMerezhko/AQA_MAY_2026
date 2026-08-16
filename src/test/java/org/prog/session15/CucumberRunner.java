@@ -27,7 +27,8 @@ import java.sql.SQLException;
         plugin = {
                 "pretty",
                 "html:target/report.html",
-                "json:target/Cucumber.json"
+                "json:target/Cucumber.json",
+                "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
         }
 //        ,tags = "@regression and not @skip"
 )
