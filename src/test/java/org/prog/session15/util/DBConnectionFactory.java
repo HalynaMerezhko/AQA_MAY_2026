@@ -10,7 +10,7 @@ public class DBConnectionFactory {
         String envType = System.getProperty("env.type", "local");
         if ("jenkins".equalsIgnoreCase(envType)) {
             return DriverManager.getConnection(
-                    "jdbc:mysql://docker-db-1:3306/db", "root", "password");
+                    "jdbc:mysql://db:3306/db", "root", "password");
         } else {
             return DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/db", "root", "password");
